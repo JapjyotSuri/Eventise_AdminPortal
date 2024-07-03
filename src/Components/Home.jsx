@@ -1,101 +1,173 @@
 import React, { useEffect, useState } from 'react'
 import { firestore } from '../firebase';
-import { addDoc, collection, getDocs, updateDoc, doc, onSnapshot, deleteDoc } from '@firebase/firestore'
+import { addDoc, collection, getDoc, updateDoc, doc, onSnapshot, deleteDoc } from '@firebase/firestore'
 import { auth } from '../firebase';
 import { deleteUser, signOut } from 'firebase/auth';
+import { FaRegUserCircle } from "react-icons/fa";
+import { FaSearch } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
+import Table from './Table';
+
 const Home = () => {
-
+    const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
     const [userList, setUserList] = useState([]);
-    useEffect(() => {//using onSnapshot here to get real time updates whenever some data in the firestore gets changed
-        const userCollection = collection(firestore, 'users');
-        const unsubscribe = onSnapshot(userCollection, (snapshot) => {
-            const usersList = snapshot.docs.map((doc) => ({
-                id: doc.id,
-                ...doc.data(),
-            }));
-            setUserList(usersList);
-        });
-
-        // Cleanup the listener on component unmount
-        return () => unsubscribe();
-    }, [])
-    async function handleClick(user) {
-        const userDoc = doc(firestore, 'users', user.uid);
-        try {
-            if (user.role === 0) {
-                await updateDoc(userDoc, {
-                    role: 1,
-                })
-            }
-            else {
-                await updateDoc(userDoc, {
-                    role: 0,
-                })
-            }
-        }
-        catch (error) {
-            console.log("error occured", error)
-        }
+    const [search, setSearch] = useState('')
+    const [filtered, setFiltered] = useState([]);
+    const [page, setPage] = useState(1);
+    const [name, setName] = useState('');
+    const itemsPerPage = 6;
+    const [adminCount, setAdminCount] = useState(0);
+    const [userCount, setUserCount] = useState(0);
+    const LastIndex = itemsPerPage * page;
+    const firstIndex = LastIndex - itemsPerPage;
+    const totalPages = Math.ceil(filtered.length / itemsPerPage);
+    const currentUsers = filtered.slice(firstIndex, LastIndex);
+     
+    function handlePrev() {
+        setPage(Math.max(1, page - 1));
     }
-    async function handleDelete(user) {
+    function handleNext() {
+        setPage(Math.min(totalPages, page + 1));
+    }
+    function handleSearchChange(e) {
+        setSearch(e.target.value);
 
-        const userToDelete = doc(firestore, 'users', user.uid);
+    }
+    function handleSearch() {
+        if (search === '') {
+            setFiltered(userList)
 
-        try {
-            await deleteUser(user).then(() => {
-                alert('User deleted')
+        }
+        else {
+            const newUsers = userList.filter((user) => {
+
+                return (
+                    search &&
+                    (user.name.toLowerCase().includes(search) || user.email.toLowerCase().includes(search))
+                );
             })
-            await deleteDoc(userToDelete);
+            setFiltered(newUsers);
+            setSearch('');
+        }
+
+    }
+    useEffect(() => {//using onSnapshot here to get real time updates whenever some data in the firestore gets changed
+        try {
+            setIsLoading(true);
+            console.log('hello')
+            const userCollection = collection(firestore, 'users');
+            console.log('hi')
+            const user = auth.currentUser
+
+            const unsubscribe = onSnapshot(userCollection, (snapshot) => {
+                console.log('hi I have reached here')
+                const usersList = snapshot.docs.map((doc) => ({
+                    id: doc.id,
+                    ...doc.data(),
+                }));
+                let adminNumber = 0;
+                usersList.map((user) => {
+                    if (user.role === 0) {
+                        adminNumber = adminNumber + 1;
+                    }
+                })
+                async function getName() {
+                    const docRef = doc(firestore, 'users', user.uid);
+                    const data = await getDoc(docRef);
+                    if (data.exists()) {
+                        console.log(data.data());
+                        setName(data.data().name)
+                    }
+                    console.log('waiting');
+                }
+                getName()
+                setAdminCount(adminNumber);
+                setUserCount(usersList.length - adminNumber);
+                setUserList(usersList);
+                setFiltered(usersList);
+                console.log(user)
+                setIsLoading(false);
+            }, (error) => {//here we had to write it like and and using try cath block doesnt catch the error as onSnapshot is an async function so try catch initially doesnt catch the error causing it not give alert
+                if (error.code === 'permission-denied') {
+                    alert('permission denied')
+                    navigate('/')
+
+
+                } else {
+                    console.log('An unexpected error occurred:', error);
+                }
+            });
+
+            // Cleanup the listener on component unmount
+            return () => unsubscribe();
         }
         catch (error) {
-            console.log("error occured", error)
+            if (error.code === 'permission-denied') {
+                alert('You do not have permission to access this data');
+            } else {
+                console.log('An unexpected error occurred:', error);
+            }
         }
+
+    }, [])
+    
+    async function handleLogout(){
+        await signOut(auth);
+        navigate('/');
     }
-
     return (
-        <div className=' w-full flex flex-row   min-h-screen'>
-            <div className='w-[30%] min-h-screen bg-slate-500'>
-                <h1>Admin Portal</h1>
-            </div>
-            <div className='flex flex-col mt-3'>
-                <div className='w-full  justify-start items-center'>
-                    <input type='text' className='h-[40px] w-[100px] border-black' placeholder='Search' />
-                </div>
-                <div>
-                    <div>
-                        <h1>Welcome back!!!!</h1>
-                    </div>
-                    <div className='flex flex-row m-10 justify-center gap-10 '>
-                        <div className=' bg-slate-600 rounded-lg w-[100px] h-[40px] flex justify-center items-center'><h1>Admin</h1></div>
-                        <div className=' bg-slate-600 rounded-lg w-[100px] h-[40px] flex justify-center items-center'><h1>User</h1></div>
-                    </div>
-                    <div className=' w-full flex flex-wrap  justify-center items-center'>
-                        {
-                            userList.map((user) => (
-                                <div className='w-[300px] h-[300px] m-4 p-4 flex items-center justify-center flex-col gap-5 rounded-2xl shadow-md bg-white text-black text-[19px]'>
-                                    <div className=' w-full flex flex-col justify-center items-center'>
-                                        <div className=''>
-                                            <div>
 
-                                            </div>
-                                            <h1>{user.name}</h1>
-                                            <h1>{user.email}</h1>
-                                            <div className='flex flex-row justify-between'>
-                                                <div onClick={() => handleClick(user)}>{
-                                                    user.role === 0 ? <button className=' bg-green-400 text-white'>Admin</button> : <button className='bg-red-500 text-white' >User</button>
-                                                }</div>
-                                                <button >Edit</button>
-                                                <button onClick={() => handleDelete(user)}>Delete</button>
-                                            </div>
-                                        </div>
-                                    </div>
+        <div className=' w-[100%] flex flex-row   min-h-screen  '>
+            {
+                isLoading ? (<div><h1>Loading.....</h1></div>) : (
+                    <div className=' w-[100%] flex flex-row   min-h-screen  overflow-x-hidden'>
+                        <div className='w-[17%] min-h-screen bg-[#222322] flex flex-col justify-between'>
+                            <div className='flex flex-col '>
+                            <div className='m-5 flex flex-row justify-start items-center gap-2'>
+                                <FaRegUserCircle className='h-[45px] w-[45px] text-white' />
+                                <h1 className=' text-[35px] text-white'>{name}</h1>
+                            </div>
+                           
+                            <div className='flex justify-start ml-5'>
+                            <h1 className='text-[25px]  text-white'>Admin Portal</h1>
+                            </div>
+                            </div>
+                            <div onClick={handleLogout} className='mb-5 '>
+                                <h1 className='text-red-500 text-[30px]'>Logout</h1>
+                            </div>
+                        </div>
+                        <div className='flex flex-col mt-3  w-[75%] '>
+
+                            <div className='flex flex-col justify-center items-start w-full ml-11'>
+                                <div>
+                                    <h1 className='text-[30px]'>Welcome back, {name} !!!!</h1>
                                 </div>
-                            ))
-                        }
-
+                                <div className='flex flex-row mt-5 justify-center gap-10 '>
+                                    <div className=' bg-[#f1e2ff] rounded-lg w-[150px] h-[50px] flex justify-center items-center'><h1>Admin: {adminCount}</h1></div>
+                                    <div className=' bg-[#dcffdf] rounded-lg w-[150px] h-[50px] flex justify-center items-center'><h1>User: {userCount}</h1></div>
+                                </div>
+                                <div className='w-full flex justify-start items-center '>
+                                <button onClick={handleSearch}><FaSearch className='h-[25px] w-[25px]'/> </button>
+                                    <input type='text' onChange={(e) => handleSearchChange(e)} value={search} className='h-[40px] w-[85%] m-5 border-black' placeholder='Search' />
+                                    
+                                </div>
+                                
+                                    <Table currentUsers={currentUsers}/>
+                                    
+                               
+                                <div className='flex flex-row w-[90%] ml-2 justify-center gap-11 mt-6 '>
+                                    <button onClick={handlePrev} className='bg-[#f1e2ff] rounded-lg h-[40px] w-[150px]'>Previous</button>
+                                    <button onClick={handleNext} className='bg-[#dcffdf] rounded-lg h-[40px] w-[150px]'>Next</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
+                )
+            }
+
+
+
         </div>
     )
 }

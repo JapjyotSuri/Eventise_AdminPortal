@@ -15,6 +15,7 @@ const Login = () => {
      await signInWithEmailAndPassword(auth,values.email, values.password).then(() => {
         alert("user signed in" + values.email)
         navigate('Home')
+        
      }).catch((error)=>{
         alert("error occured"+ error);
      })
@@ -22,7 +23,7 @@ const Login = () => {
    }
    catch (error) {
      console.log(error)
-     alert(error.nativeErrorMessage)
+     alert(error)
    }
  }
     async function googleLogin(){
@@ -76,25 +77,30 @@ const Login = () => {
               handleSubmit,
 
             }) => (
-              <div className='w-[500px] h-[500px] m-4 p-4 flex items-center justify-center flex-col gap-5 rounded-2xl shadow-md bg-white text-black text-[19px]'>
-                
+              <div className='w-[500px] h-[550px] m-4 p-4 flex items-center justify-center flex-col gap-5 rounded-2xl shadow-md bg-white text-black text-[19px]'>
+                <div className='flex justify-start w-[85%]'>
+                <label>Enter Email: </label>
+                </div>
                 <div>
+                
                   <input  placeholder='Email' value={values.email} onChange={handleChange('email')} className=' w-[400px] h-[50px] border-black bg-slate-100 rounded-l pl-4'/>
                 </div>
                 
-
+                <div className='flex justify-start w-[85%]'>
+                <label>Enter Password: </label>
+                </div>
                 <div>
                   <input  placeholder='Password' value={values.password} onChange={handleChange('password')} secureTextEntry={true} className=' w-[400px] h-[50px] border-black bg-slate-100 rounded-l pl-4'/>
                 </div>
-                <div><h3 className='' onClick={() => handleReset(values)}>forgotten your password?</h3></div>
+                <div className='w-[85%]  flex justify-start'><h3  onClick={() => handleReset(values)} className='text-lg'>forgotten your password?</h3></div>
                 <button onClick={handleSubmit} className='bg-blue-500 w-[220px] h-[50px] rounded-lg text-white'><h1>Login</h1></button>
-                <div className='flex flex-row w-[100%] justify-center items-center gap-2'>
-                  <h1>Dont have an account? </h1>
+                <div className='flex flex-row w-[85%] justify-start items-center gap-2'>
+                  <h1 className='text-lg'>Dont have an account? </h1>
                   <button onClick={() => navigate('Signup')} className=' text-blue-500'>Signup</button>
                 </div>
 
                 <div><h1>OR</h1></div>
-                <img onClick={googleLogin} src={googleLoginPic} className='w-[45%]'/>
+                <img onClick={googleLogin} src={googleLoginPic} className='w-[220px]'/>
 
               </div>
             )}
