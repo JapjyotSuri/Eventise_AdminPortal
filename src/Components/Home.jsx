@@ -23,7 +23,7 @@ const Home = () => {
     const firstIndex = LastIndex - itemsPerPage;
     const totalPages = Math.ceil(filtered.length / itemsPerPage);
     const currentUsers = filtered.slice(firstIndex, LastIndex);
-     
+
     function handlePrev() {
         setPage(Math.max(1, page - 1));
     }
@@ -111,51 +111,52 @@ const Home = () => {
         }
 
     }, [])
-    
-    async function handleLogout(){
+
+    async function handleLogout() {
         await signOut(auth);
         navigate('/');
     }
     return (
 
-        <div className=' w-[100%] flex flex-row   min-h-screen  '>
+        <div className=' w-[100%] flex flex-col   min-h-screen  '>
             {
                 isLoading ? (<div><h1>Loading.....</h1></div>) : (
-                    <div className=' w-[100%] flex flex-row   min-h-screen  overflow-x-hidden'>
-                        <div className='w-[17%] min-h-screen bg-[#222322] flex flex-col justify-between'>
-                            <div className='flex flex-col '>
-                            <div className='m-5 flex flex-row justify-start items-center gap-2'>
-                                <FaRegUserCircle className='h-[45px] w-[45px] text-white' />
-                                <h1 className=' text-[35px] text-white'>{name}</h1>
-                            </div>
+                    <div className=' w-[100%] flex flex-col   overflow-x-hidden'>
+                        <div className='w-[100%] h-[70px] bg-[#222322] flex flex-row justify-between items-center '>
+                            
+                                <div className='flex flex-row justify-center items-center gap-2 ml-5'>
+                                    <FaRegUserCircle className='h-[30px] w-[30px] text-white' />
+                                    <h1 className=' text-[30px] text-white'>{name}</h1>
+                                </div>
+
+                                <div className='flex justify-start ml-5'>
+                                    <h1 className='text-[30px]  text-white'>Admin Portal</h1>
+                                </div>
                            
-                            <div className='flex justify-start ml-5'>
-                            <h1 className='text-[25px]  text-white'>Admin Portal</h1>
-                            </div>
-                            </div>
-                            <div onClick={handleLogout} className='mb-5 '>
-                                <h1 className='text-red-500 text-[30px]'>Logout</h1>
+                            <div onClick={handleLogout} className='bg-red-500  h-[70px] w-[175px] flex justify-center items-center'>
+                                <h1 className='text-white text-[25px]'>Logout</h1>
                             </div>
                         </div>
                         <div className='flex flex-col mt-3  w-[75%] '>
 
                             <div className='flex flex-col justify-center items-start w-full ml-11'>
-                                <div>
+                                <div className='flex flex-col justify-start items-start gap-4 mt-4 mb-2'>
                                     <h1 className='text-[30px]'>Welcome back, {name} !!!!</h1>
+                                    <p className='text-[17px]'>Welcome to the Users List section! Here, you'll find all the information about the registered users.</p>
                                 </div>
                                 <div className='flex flex-row mt-5 justify-center gap-10 '>
                                     <div className=' bg-[#f1e2ff] rounded-lg w-[150px] h-[50px] flex justify-center items-center'><h1>Admin: {adminCount}</h1></div>
                                     <div className=' bg-[#dcffdf] rounded-lg w-[150px] h-[50px] flex justify-center items-center'><h1>User: {userCount}</h1></div>
                                 </div>
                                 <div className='w-full flex justify-start items-center '>
-                                <button onClick={handleSearch}><FaSearch className='h-[25px] w-[25px]'/> </button>
+                                    <button onClick={handleSearch}><FaSearch className='h-[25px] w-[25px]' /> </button>
                                     <input type='text' onChange={(e) => handleSearchChange(e)} value={search} className='h-[40px] w-[85%] m-5 border-black' placeholder='Search' />
-                                    
+
                                 </div>
-                                
-                                    <Table currentUsers={currentUsers}/>
-                                    
-                               
+
+                                <Table currentUsers={currentUsers} />
+
+
                                 <div className='flex flex-row w-[90%] ml-2 justify-center gap-11 mt-6 '>
                                     <button onClick={handlePrev} className='bg-[#f1e2ff] rounded-lg h-[40px] w-[150px]'>Previous</button>
                                     <button onClick={handleNext} className='bg-[#dcffdf] rounded-lg h-[40px] w-[150px]'>Next</button>

@@ -71,28 +71,40 @@ const Signup = () => {
               handleSubmit,
 
             }) => (
-              <div className='w-[500px] h-[500px] m-4 p-4 flex items-center justify-center flex-col gap-5 rounded-2xl shadow-md bg-white text-black text-[19px]'>
+              <div className='w-[470px] h-[550px]  p-4 flex items-center justify-center flex-col gap-3 rounded-2xl shadow-md bg-white text-black text-[19px]'>
+                <div className='flex justify-start w-[85%]'>
+                <label className='text-[17px]'>Enter name: </label>
+                </div>
                 <div>
-                  <input  placeholder='name' value={values.name} onChange={handleChange('name')} className=' w-[400px] h-[50px] border-black bg-slate-100 rounded-l pl-4'/>
+                    
+                  <input  placeholder='Name' value={values.name} onChange={handleChange('name')} className=' w-[370px] h-[50px] border-black bg-slate-100 rounded-l pl-4'/>
                 </div>
                 {(errors.name && touched.name) && <h1>{errors.name}</h1>}
+                <div className='flex justify-start w-[85%]'>
+                <label className='text-[17px]'>Enter Email: </label>
+                </div>
                 <div>
-                  <input  placeholder='Email' value={values.email} onChange={handleChange('email')} className=' w-[400px] h-[50px] border-black bg-slate-100 rounded-l pl-4'/>
+                  <input  placeholder='Email' value={values.email} onChange={handleChange('email')} className=' w-[370px] h-[50px] border-black bg-slate-100 rounded-l pl-4'/>
                 </div>
                 {(errors.email && touched.email) && <h1>{errors.email}</h1>}
-
+                <div className='flex justify-start w-[85%]'>
+                <label className='text-[17px]'>Create Password: </label>
+                </div>
                 <div>
-                  <input  placeholder='Password' value={values.password} onChange={handleChange('password')} secureTextEntry={true} className=' w-[400px] h-[50px] border-black bg-slate-100 rounded-l pl-4'/>
+                  <input  placeholder='Password' value={values.password} onChange={handleChange('password')} secureTextEntry={true} className=' w-[370px] h-[50px] border-black bg-slate-100 rounded-l pl-4'/>
                 </div>
                 {(errors.password && touched.password) && <h1>{errors.password}</h1>}
+                <div className='flex justify-start w-[85%]'>
+                <label className='text-[17px]'>Confirm Password: </label>
+                </div>
                 <div>
-                  <input  placeholder='Confirm Password' value={values.confirmpassword} onChange={handleChange('confirmpassword')} secureTextEntry={true} className=' w-[400px] h-[50px] border-black bg-slate-100 rounded-l pl-4'/>
+                  <input  placeholder='Confirm Password' value={values.confirmpassword} onChange={handleChange('confirmpassword')} secureTextEntry={true} className=' w-[370px] h-[50px] border-black bg-slate-100 rounded-l pl-4'/>
                 </div>
                 {(errors.confirmpassword && touched.confirmpassword) && <h1>{errors.confirmpassword}</h1>}
-                <button onClick={handleSubmit} className='bg-blue-500 w-[220px] h-[50px] rounded-lg text-white'><h1>Sign up</h1></button>
+                <button onClick={handleSubmit} className='bg-blue-500 w-[370px] h-[50px] rounded-lg text-white mt-2'><h1>Sign up</h1></button>
                 <div className='flex-row w-[400px] flex justify-center items-center gap-2'>
-                  <p>Already have an account? </p>
-                  <button onClick={() => navigate('/')} className=' text-blue-500'>Login</button>
+                  <p className='text-[17px]'>Already have an account? </p>
+                  <button onClick={() => navigate('/')} className=' text-blue-500 text-[17px]'>Login</button>
                 </div>
               </div>
             )}

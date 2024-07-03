@@ -77,29 +77,29 @@ const Login = () => {
               handleSubmit,
 
             }) => (
-              <div className='w-[500px] h-[550px] m-4 p-4 flex items-center justify-center flex-col gap-5 rounded-2xl shadow-md bg-white text-black text-[19px]'>
+              <div className='w-[450px] h-[500px]  p-4 flex items-center justify-center flex-col gap-3 rounded-2xl shadow-md bg-white text-black text-[19px]'>
                 <div className='flex justify-start w-[85%]'>
-                <label>Enter Email: </label>
+                <label className='text-[17px]'>Enter Email: </label>
                 </div>
                 <div>
                 
-                  <input  placeholder='Email' value={values.email} onChange={handleChange('email')} className=' w-[400px] h-[50px] border-black bg-slate-100 rounded-l pl-4'/>
+                  <input  placeholder='Email' value={values.email} onChange={handleChange('email')} className=' w-[350px] h-[50px] border-black bg-slate-100 rounded-l pl-4'/>
                 </div>
                 
                 <div className='flex justify-start w-[85%]'>
-                <label>Enter Password: </label>
+                <label className='text-[17px]'>Enter Password: </label>
                 </div>
                 <div>
-                  <input  placeholder='Password' value={values.password} onChange={handleChange('password')} secureTextEntry={true} className=' w-[400px] h-[50px] border-black bg-slate-100 rounded-l pl-4'/>
+                  <input  placeholder='Password' value={values.password} onChange={handleChange('password')} secureTextEntry={true} className=' w-[350px] h-[50px] border-black bg-slate-100 rounded-l pl-4'/>
                 </div>
-                <div className='w-[85%]  flex justify-start'><h3  onClick={() => handleReset(values)} className='text-lg'>forgotten your password?</h3></div>
-                <button onClick={handleSubmit} className='bg-blue-500 w-[220px] h-[50px] rounded-lg text-white'><h1>Login</h1></button>
-                <div className='flex flex-row w-[85%] justify-start items-center gap-2'>
-                  <h1 className='text-lg'>Dont have an account? </h1>
-                  <button onClick={() => navigate('Signup')} className=' text-blue-500'>Signup</button>
+                <div className='w-[85%]  flex justify-start'><h3  onClick={() => handleReset(values)} className='text-[17px] text-blue-400'>forgotten your password?</h3></div>
+                <button onClick={handleSubmit} className='bg-blue-500 w-[350px] h-[50px] rounded-lg text-white'><h1>Login</h1></button>
+                <div className='flex flex-row w-[85%] justify-start items-center gap-2 '>
+                  <h1 className='text-[17px]'>Dont have an account? </h1>
+                  <button onClick={() => navigate('Signup')} className=' text-blue-500 text-[17px]'>Signup</button>
                 </div>
 
-                <div><h1>OR</h1></div>
+                <div className=''><h1 className='text-[18px]'>OR</h1></div>
                 <img onClick={googleLogin} src={googleLoginPic} className='w-[220px]'/>
 
               </div>
