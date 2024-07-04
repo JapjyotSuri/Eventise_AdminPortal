@@ -32,23 +32,25 @@ const Signup = () => {
           await createUserWithEmailAndPassword(auth,values.email, values.password)
           
           const user = auth.currentUser;
+          console.log(user.uid);
           const userData = {
             uid: user.uid,
             name: values.name,
             email: values.email,
-            role: 0,
+            role: 1,
             isEmailVerified: true,
     
           }
+          console.log(userData)
           const docToSet=doc(firestore,'users',user.uid)//here we are using doc not get doc as we only need the reference of the document not the whole document
-          await setDoc(docToSet,userData)
+          await setDoc(docToSet,userData).then()
           alert("User created " + values.email)
-          navigate('Home')
+          navigate('/')
         //   navigation.navigate('Login')
         }
         catch (error) {
           console.log(error)
-          alert(error.nativeErrorMessage)
+          alert(error)
         }
       }
 
@@ -91,14 +93,14 @@ const Signup = () => {
                 <label className='text-[17px]'>Create Password: </label>
                 </div>
                 <div>
-                  <input  placeholder='Password' value={values.password} onChange={handleChange('password')} secureTextEntry={true} className=' w-[370px] h-[50px] border-black bg-slate-100 rounded-l pl-4'/>
+                  <input  placeholder='Password' value={values.password} onChange={handleChange('password')} type='password' className=' w-[370px] h-[50px] border-black bg-slate-100 rounded-l pl-4'/>
                 </div>
                 {(errors.password && touched.password) && <h1>{errors.password}</h1>}
                 <div className='flex justify-start w-[85%]'>
                 <label className='text-[17px]'>Confirm Password: </label>
                 </div>
                 <div>
-                  <input  placeholder='Confirm Password' value={values.confirmpassword} onChange={handleChange('confirmpassword')} secureTextEntry={true} className=' w-[370px] h-[50px] border-black bg-slate-100 rounded-l pl-4'/>
+                  <input  placeholder='Confirm Password' value={values.confirmpassword} onChange={handleChange('confirmpassword')} type='password' className=' w-[370px] h-[50px] border-black bg-slate-100 rounded-l pl-4'/>
                 </div>
                 {(errors.confirmpassword && touched.confirmpassword) && <h1>{errors.confirmpassword}</h1>}
                 <button onClick={handleSubmit} className='bg-blue-500 w-[370px] h-[50px] rounded-lg text-white mt-2'><h1>Sign up</h1></button>

@@ -19,5 +19,4 @@ const WithAuthProtection = (WrappedComponent) => {
 
   return WithAuth;
 };
-
 export default WithAuthProtection;

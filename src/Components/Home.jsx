@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
+import { onAuthStateChanged } from 'firebase/auth';
 import { firestore } from '../firebase';
-import { addDoc, collection, getDoc, updateDoc, doc, onSnapshot, deleteDoc } from '@firebase/firestore'
+import { addDoc, collection, getDoc, updateDoc, doc, onSnapshot, deleteDoc,query,orderBy } from '@firebase/firestore'
 import { auth } from '../firebase';
 import { deleteUser, signOut } from 'firebase/auth';
 import { FaRegUserCircle } from "react-icons/fa";
 import { FaSearch } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 import Table from './Table';
+
 
 const Home = () => {
     const navigate = useNavigate();
@@ -23,7 +25,7 @@ const Home = () => {
     const firstIndex = LastIndex - itemsPerPage;
     const totalPages = Math.ceil(filtered.length / itemsPerPage);
     const currentUsers = filtered.slice(firstIndex, LastIndex);
-
+    const [CurrentUser,setCurrentUser]=useState(null);//storing info about current logged in user
     function handlePrev() {
         setPage(Math.max(1, page - 1));
     }
@@ -53,65 +55,54 @@ const Home = () => {
 
     }
     useEffect(() => {//using onSnapshot here to get real time updates whenever some data in the firestore gets changed
-        try {
-            setIsLoading(true);
-            console.log('hello')
-            const userCollection = collection(firestore, 'users');
-            console.log('hi')
-            const user = auth.currentUser
-
-            const unsubscribe = onSnapshot(userCollection, (snapshot) => {
-                console.log('hi I have reached here')
-                const usersList = snapshot.docs.map((doc) => ({
-                    id: doc.id,
-                    ...doc.data(),
-                }));
-                let adminNumber = 0;
-                usersList.map((user) => {
-                    if (user.role === 0) {
-                        adminNumber = adminNumber + 1;
-                    }
-                })
-                async function getName() {
-                    const docRef = doc(firestore, 'users', user.uid);
-                    const data = await getDoc(docRef);
-                    if (data.exists()) {
-                        console.log(data.data());
-                        setName(data.data().name)
-                    }
-                    console.log('waiting');
+        setIsLoading(true);   
+        const userCollection = collection(firestore, 'users');
+        const userQuery=query(userCollection,orderBy('name'))
+        const user=auth.currentUser
+        const unsubscribe = onSnapshot(userQuery, (snapshot) => {
+            console.log('hi I have reached here')
+            const usersList = snapshot.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+            }));
+            let adminNumber = 0;
+            usersList.map((user) => {
+                if (user.role === 0) {
+                    adminNumber = adminNumber + 1;
                 }
-                getName()
-                setAdminCount(adminNumber);
-                setUserCount(usersList.length - adminNumber);
-                setUserList(usersList);
-                setFiltered(usersList);
-                console.log(user)
-                setIsLoading(false);
-            }, (error) => {//here we had to write it like and and using try cath block doesnt catch the error as onSnapshot is an async function so try catch initially doesnt catch the error causing it not give alert
-                if (error.code === 'permission-denied') {
-                    alert('permission denied')
-                    navigate('/')
-
-
-                } else {
-                    console.log('An unexpected error occurred:', error);
+            })
+            async function getName() {
+                const docRef = doc(firestore, 'users', user.uid);
+                const data = await getDoc(docRef);
+                if (data.exists()) {
+                    console.log(data.data());
+                    setName(data.data().name)
                 }
-            });
-
-            // Cleanup the listener on component unmount
-            return () => unsubscribe();
-        }
-        catch (error) {
+                console.log('waiting');
+            }
+            getName()
+            setAdminCount(adminNumber);
+            setUserCount(usersList.length - adminNumber);
+            setUserList(usersList);
+            setFiltered(usersList);
+            console.log(user)
+            setIsLoading(false);
+        }, (error) => {//here we had to write it like and and using try cath block doesnt catch the error as onSnapshot is an async function so try catch initially doesnt catch the error causing it not give alert
             if (error.code === 'permission-denied') {
-                alert('You do not have permission to access this data');
+                alert('permission denied')
+                navigate('/')
+
+
             } else {
                 console.log('An unexpected error occurred:', error);
             }
-        }
-
-    }, [])
-
+        });
+        // Cleanup the listener on component unmount
+        return () => unsubscribe();   
+           
+        
+    }, [navigate])
+    
     async function handleLogout() {
         await signOut(auth);
         navigate('/');
@@ -161,6 +152,7 @@ const Home = () => {
                                     <button onClick={handlePrev} className='bg-[#f1e2ff] rounded-lg h-[40px] w-[150px]'>Previous</button>
                                     <button onClick={handleNext} className='bg-[#dcffdf] rounded-lg h-[40px] w-[150px]'>Next</button>
                                 </div>
+                                
                             </div>
                         </div>
                     </div>

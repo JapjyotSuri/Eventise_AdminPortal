@@ -6,6 +6,7 @@ import googleLoginPic from '../googleLogin.png'
 import { Formik } from 'formik';
 import { firestore } from '../firebase';
 import { addDoc, collection, getDocs, updateDoc, doc, onSnapshot, deleteDoc ,setDoc} from '@firebase/firestore'
+import formBackground from '../formBackground.jpg'
 const Login = () => {
    const navigate=useNavigate();
    async function LoginFunc(values) {
@@ -13,7 +14,7 @@ const Login = () => {
 
    try {
      await signInWithEmailAndPassword(auth,values.email, values.password).then(() => {
-        alert("user signed in" + values.email)
+        
         navigate('Home')
         
      }).catch((error)=>{
@@ -36,7 +37,7 @@ const Login = () => {
             uid: result.user.uid,
             name: result.user.displayName,
             email: result.user.email,
-            role: 0,
+            role: 1,
             isEmailVerified: true,
     
           }
@@ -59,7 +60,7 @@ const Login = () => {
     }
   return (
 
-    <div className=' min-h-screen flex justify-center items-center'>
+    <div className=' min-h-screen flex justify-center items-center '>
        <Formik
             initialValues={{email: '', password: ''}}
             
@@ -77,7 +78,7 @@ const Login = () => {
               handleSubmit,
 
             }) => (
-              <div className='w-[450px] h-[500px]  p-4 flex items-center justify-center flex-col gap-3 rounded-2xl shadow-md bg-white text-black text-[19px]'>
+              <div className='w-[450px] h-[500px]  p-4 flex items-center justify-center flex-col gap-3 rounded-2xl shadow-md bg-white  text-black text-[19px] '>
                 <div className='flex justify-start w-[85%]'>
                 <label className='text-[17px]'>Enter Email: </label>
                 </div>
@@ -90,7 +91,7 @@ const Login = () => {
                 <label className='text-[17px]'>Enter Password: </label>
                 </div>
                 <div>
-                  <input  placeholder='Password' value={values.password} onChange={handleChange('password')} secureTextEntry={true} className=' w-[350px] h-[50px] border-black bg-slate-100 rounded-l pl-4'/>
+                  <input  placeholder='Password' value={values.password} onChange={handleChange('password')} type='password' className=' w-[350px] h-[50px] border-black bg-slate-100 rounded-l pl-4'/>
                 </div>
                 <div className='w-[85%]  flex justify-start'><h3  onClick={() => handleReset(values)} className='text-[17px] text-blue-400'>forgotten your password?</h3></div>
                 <button onClick={handleSubmit} className='bg-blue-500 w-[350px] h-[50px] rounded-lg text-white'><h1>Login</h1></button>

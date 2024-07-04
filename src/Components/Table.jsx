@@ -43,8 +43,8 @@ const Table = ({currentUsers}) => {
       <table className='min-w-[90%] border-collapse border border-gray-300'>
                                         <thead>
                                             <tr>
-                                                <th className="border border-gray-400 px-4 py-2">name</th>
-                                                <th className="border border-gray-400 px-4 py-2">email</th>
+                                                <th className="border border-gray-400 px-4 py-2">Name</th>
+                                                <th className="border border-gray-400 px-4 py-2">Email</th>
                                                 <th className="border border-gray-400 px-4 py-2">Role</th>
                                                 <th className="border border-gray-400 px-4 py-2">Actions</th>
                                             </tr>
