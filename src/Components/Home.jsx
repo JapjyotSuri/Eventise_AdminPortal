@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { onAuthStateChanged } from 'firebase/auth';
 import { firestore } from '../firebase';
-import { addDoc, collection, getDoc, updateDoc, doc, onSnapshot, deleteDoc,query,orderBy } from '@firebase/firestore'
+import { addDoc, collection, getDoc, updateDoc, doc, onSnapshot, deleteDoc, query, orderBy } from '@firebase/firestore'
 import { auth } from '../firebase';
 import { deleteUser, signOut } from 'firebase/auth';
 import { FaRegUserCircle } from "react-icons/fa";
@@ -25,7 +25,8 @@ const Home = () => {
     const firstIndex = LastIndex - itemsPerPage;
     const totalPages = Math.ceil(filtered.length / itemsPerPage);
     const currentUsers = filtered.slice(firstIndex, LastIndex);
-    const [CurrentUser,setCurrentUser]=useState(null);//storing info about current logged in user
+    const [CurrentUser, setCurrentUser] = useState(null);//storing info about current logged in user
+    let unsubscribe=null
     function handlePrev() {
         setPage(Math.max(1, page - 1));
     }
@@ -55,75 +56,92 @@ const Home = () => {
 
     }
     useEffect(() => {//using onSnapshot here to get real time updates whenever some data in the firestore gets changed
-        setIsLoading(true);   
-        const userCollection = collection(firestore, 'users');
-        const userQuery=query(userCollection,orderBy('name'))
-        const user=auth.currentUser
-        const unsubscribe = onSnapshot(userQuery, (snapshot) => {
-            console.log('hi I have reached here')
-            const usersList = snapshot.docs.map((doc) => ({
-                id: doc.id,
-                ...doc.data(),
-            }));
-            let adminNumber = 0;
-            usersList.map((user) => {
-                if (user.role === 0) {
-                    adminNumber = adminNumber + 1;
-                }
-            })
-            async function getName() {
-                const docRef = doc(firestore, 'users', user.uid);
-                const data = await getDoc(docRef);
-                if (data.exists()) {
-                    console.log(data.data());
-                    setName(data.data().name)
-                }
-                console.log('waiting');
-            }
-            getName()
-            setAdminCount(adminNumber);
-            setUserCount(usersList.length - adminNumber);
-            setUserList(usersList);
-            setFiltered(usersList);
-            console.log(user)
-            setIsLoading(false);
-        }, (error) => {//here we had to write it like and and using try cath block doesnt catch the error as onSnapshot is an async function so try catch initially doesnt catch the error causing it not give alert
-            if (error.code === 'permission-denied') {
-                alert('permission denied')
-                navigate('/')
+        setIsLoading(true);
+        const subscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
 
 
-            } else {
-                console.log('An unexpected error occurred:', error);
+                const userCollection = collection(firestore, 'users');
+                const userQuery = query(userCollection, orderBy('name'))
+
+                unsubscribe = onSnapshot(userQuery, (snapshot) => {
+                    console.log('hi I have reached here')
+                    const usersList = snapshot.docs.map((doc) => ({
+                        id: doc.id,
+                        ...doc.data(),
+                    }));
+                    let adminNumber = 0;
+                    usersList.map((user) => {
+                        if (user.role === 0) {
+                            adminNumber = adminNumber + 1;
+                        }
+                    })
+                    async function getName() {
+                        const docRef = doc(firestore, 'users', user.uid);
+                        const data = await getDoc(docRef);
+                        if (data.exists()) {
+                            console.log(data.data());
+                            setName(data.data().name)
+                        }
+                        console.log('waiting');
+                    }
+                    getName()
+                    setAdminCount(adminNumber);
+                    setUserCount(usersList.length - adminNumber);
+                    setUserList(usersList);
+                    setFiltered(usersList);
+                    console.log(user)
+                    setIsLoading(false);
+                }, (error) => {//here we had to write it like and and using try cath block doesnt catch the error as onSnapshot is an async function so try catch initially doesnt catch the error causing it not give alert
+                    if (error.code === 'permission-denied') {
+                        alert('permission denied')
+                        navigate('/')
+
+
+                    } else {
+                        console.log('An unexpected error occurred:', error);
+                    }
+                });
+                
             }
-        });
-        // Cleanup the listener on component unmount
-        return () => unsubscribe();   
-           
-        
+
+        })
+       return () =>{
+                   if(unsubscribe){
+                    unsubscribe();
+                   }
+                   subscribe()
+                }
+
     }, [navigate])
-    
+
     async function handleLogout() {
         await signOut(auth);
+        setCurrentUser(null);
         navigate('/');
     }
     return (
 
         <div className=' w-[100%] flex flex-col   min-h-screen  '>
             {
-                isLoading ? (<div><h1>Loading.....</h1></div>) : (
+                isLoading ? (<div className='mt-[40px]'>
+                    <div className="inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-blue-700 border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+                        role="status">
+
+                    </div>
+                </div>) : (
                     <div className=' w-[100%] flex flex-col   overflow-x-hidden'>
                         <div className='w-[100%] h-[70px] bg-[#222322] flex flex-row justify-between items-center '>
-                            
-                                <div className='flex flex-row justify-center items-center gap-2 ml-5'>
-                                    <FaRegUserCircle className='h-[30px] w-[30px] text-white' />
-                                    <h1 className=' text-[30px] text-white'>{name}</h1>
-                                </div>
 
-                                <div className='flex justify-start ml-5'>
-                                    <h1 className='text-[30px]  text-white'>Admin Portal</h1>
-                                </div>
-                           
+                            <div className='flex flex-row justify-center items-center gap-2 ml-5'>
+                                <FaRegUserCircle className='h-[30px] w-[30px] text-white' />
+                                <h1 className=' text-[30px] text-white'>{name}</h1>
+                            </div>
+
+                            <div className='flex justify-start ml-5'>
+                                <h1 className='text-[30px]  text-white'>Admin Portal</h1>
+                            </div>
+
                             <div onClick={handleLogout} className='bg-red-500  h-[70px] w-[175px] flex justify-center items-center'>
                                 <h1 className='text-white text-[25px]'>Logout</h1>
                             </div>
@@ -141,7 +159,7 @@ const Home = () => {
                                 </div>
                                 <div className='w-full flex justify-start items-center '>
                                     <button onClick={handleSearch}><FaSearch className='h-[25px] w-[25px]' /> </button>
-                                    <input type='text' onChange={(e) => handleSearchChange(e)} value={search} className='h-[40px] w-[85%] m-5 border-black' placeholder='Search' />
+                                    <input type='text' onChange={(e) => handleSearchChange(e)} value={search} className='h-[40px] w-[85%] m-5 border-black px-4' placeholder='Search' />
 
                                 </div>
 
@@ -152,7 +170,7 @@ const Home = () => {
                                     <button onClick={handlePrev} className='bg-[#f1e2ff] rounded-lg h-[40px] w-[150px]'>Previous</button>
                                     <button onClick={handleNext} className='bg-[#dcffdf] rounded-lg h-[40px] w-[150px]'>Next</button>
                                 </div>
-                                
+
                             </div>
                         </div>
                     </div>

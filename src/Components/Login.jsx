@@ -67,7 +67,7 @@ const Login = () => {
             onSubmit={(values) => {
               console.log(values)
               LoginFunc(values);
-            //   navigation.navigate('Login')
+              
             }}
           >
             {({
