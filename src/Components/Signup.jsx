@@ -5,6 +5,7 @@ import { auth, firestore } from '../firebase';
 import * as Yup from 'yup'
 import { Formik } from 'formik';
 import { useNavigate } from 'react-router-dom';
+import userPortalImage from '../AnimatedUserPortalImage.jpeg'
 const Signup = () => {
     const navigate=useNavigate();
     const SignupValidationSchema = Yup.object().shape({
@@ -72,7 +73,13 @@ const Signup = () => {
               handleSubmit,
 
             }) => (
-              <div className='w-[470px] h-[600px]  p-4 flex items-center justify-center flex-col gap-3 rounded-2xl shadow-md bg-white text-black text-[19px]'>
+              <div className='w-auto h-auto  p-4 flex  flex-row items-center justify-center  gap-3 rounded-2xl shadow-md bg-white  text-black text-[19px]'>
+                
+                <div className='flex justify-start  flex-col items-start gap-3  text-black text-[19px] px-5'>
+                <div className='flex justify-start text-[30px] '>
+              <h1 className=' text-blue-700 font-bold'>Lets get started!!!</h1>
+              
+              </div>
                 <div className='flex justify-start w-[85%]'>
                 <label className='text-[17px]'>Enter Name: </label>
                 </div>
@@ -106,6 +113,10 @@ const Signup = () => {
                 <div className='flex-row w-[400px] flex justify-center items-center gap-2'>
                   <p className='text-[17px]'>Already have an account? </p>
                   <button onClick={() => navigate('/')} className=' text-blue-500 text-[17px]'>Login</button>
+                </div>
+                </div>
+                <div>
+                <img src={userPortalImage}></img>
                 </div>
               </div>
             )}
