@@ -1,3 +1,3 @@
-![src/Login_AdminPortal.png]
-![src/Signup_AdminPortal.png]
-![src/AdminPortal.png]
+![anem](src/Login_AdminPortal.png)
+![anem](src/Signup_AdminPortal.png)
+![anem](src/AdminPortal.png)
