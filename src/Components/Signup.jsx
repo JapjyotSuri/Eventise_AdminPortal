@@ -1,6 +1,6 @@
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import React, { useState } from 'react'
-import {addDoc,collection,getDoc,doc,onSnapshot,deleteDoc,setDoc} from '@firebase/firestore'
+import {doc,setDoc} from '@firebase/firestore'
 import { auth, firestore } from '../firebase';
 import * as Yup from 'yup'
 import { Formik } from 'formik';
@@ -46,7 +46,7 @@ const Signup = () => {
           await setDoc(docToSet,userData).then()
           alert("User created " + values.email)
           navigate('/')
-        //   navigation.navigate('Login')
+        
         }
         catch (error) {
           console.log(error)
@@ -62,7 +62,6 @@ const Signup = () => {
             onSubmit={(values) => {
               console.log(values)
               signUpFunc(values);
-            //   navigation.navigate('Login')
             }}
           >
             {({
@@ -73,36 +72,36 @@ const Signup = () => {
               handleSubmit,
 
             }) => (
-              <div className='w-[470px] h-[550px]  p-4 flex items-center justify-center flex-col gap-3 rounded-2xl shadow-md bg-white text-black text-[19px]'>
+              <div className='w-[470px] h-[600px]  p-4 flex items-center justify-center flex-col gap-3 rounded-2xl shadow-md bg-white text-black text-[19px]'>
                 <div className='flex justify-start w-[85%]'>
-                <label className='text-[17px]'>Enter name: </label>
+                <label className='text-[17px]'>Enter Name: </label>
                 </div>
                 <div>
                     
                   <input  placeholder='Name' value={values.name} onChange={handleChange('name')} className=' w-[370px] h-[50px] border-black bg-slate-100 rounded-l pl-4'/>
                 </div>
-                {(errors.name && touched.name) && <h1>{errors.name}</h1>}
+                {(errors.name && touched.name) && <h1 className=' text-red-500 text-[17px] my-[-10px]'>{errors.name}</h1>}
                 <div className='flex justify-start w-[85%]'>
                 <label className='text-[17px]'>Enter Email: </label>
                 </div>
                 <div>
                   <input  placeholder='Email' value={values.email} onChange={handleChange('email')} className=' w-[370px] h-[50px] border-black bg-slate-100 rounded-l pl-4'/>
                 </div>
-                {(errors.email && touched.email) && <h1>{errors.email}</h1>}
+                {(errors.email && touched.email) && <h1 className=' text-red-500 text-[17px] my-[-10px]'>{errors.email}</h1>}
                 <div className='flex justify-start w-[85%]'>
                 <label className='text-[17px]'>Create Password: </label>
                 </div>
                 <div>
                   <input  placeholder='Password' value={values.password} onChange={handleChange('password')} type='password' className=' w-[370px] h-[50px] border-black bg-slate-100 rounded-l pl-4'/>
                 </div>
-                {(errors.password && touched.password) && <h1>{errors.password}</h1>}
+                {(errors.password && touched.password) && <h1 className=' text-red-500 text-[17px] my-[-10px]'>{errors.password}</h1>}
                 <div className='flex justify-start w-[85%]'>
                 <label className='text-[17px]'>Confirm Password: </label>
                 </div>
                 <div>
                   <input  placeholder='Confirm Password' value={values.confirmpassword} onChange={handleChange('confirmpassword')} type='password' className=' w-[370px] h-[50px] border-black bg-slate-100 rounded-l pl-4'/>
                 </div>
-                {(errors.confirmpassword && touched.confirmpassword) && <h1>{errors.confirmpassword}</h1>}
+                {(errors.confirmpassword && touched.confirmpassword) && <h1 className=' text-red-500 text-[17px] my-[-10px]'>{errors.confirmpassword}</h1>}
                 <button onClick={handleSubmit} className='bg-blue-500 w-[370px] h-[50px] rounded-lg text-white mt-2'><h1>Sign up</h1></button>
                 <div className='flex-row w-[400px] flex justify-center items-center gap-2'>
                   <p className='text-[17px]'>Already have an account? </p>

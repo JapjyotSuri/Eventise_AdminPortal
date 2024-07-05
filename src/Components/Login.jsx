@@ -5,8 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import googleLoginPic from '../googleLogin.png'
 import { Formik } from 'formik';
 import { firestore } from '../firebase';
-import { addDoc, collection, getDocs, updateDoc, doc, onSnapshot, deleteDoc ,setDoc} from '@firebase/firestore'
-import formBackground from '../formBackground.jpg'
+import {  doc, setDoc} from '@firebase/firestore'
+
 const Login = () => {
    const navigate=useNavigate();
    async function LoginFunc(values) {
@@ -71,9 +71,7 @@ const Login = () => {
             }}
           >
             {({
-              values,
-              errors,
-              touched,
+              values,              
               handleChange,
               handleSubmit,
 

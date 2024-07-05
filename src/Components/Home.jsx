@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { onAuthStateChanged } from 'firebase/auth';
 import { firestore } from '../firebase';
-import { addDoc, collection, getDoc, updateDoc, doc, onSnapshot, deleteDoc, query, orderBy } from '@firebase/firestore'
+import {  collection, getDoc, doc, onSnapshot, query, orderBy } from '@firebase/firestore'
 import { auth } from '../firebase';
-import { deleteUser, signOut } from 'firebase/auth';
+import { signOut } from 'firebase/auth';
 import { FaRegUserCircle } from "react-icons/fa";
 import { FaSearch } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
@@ -59,13 +59,13 @@ const Home = () => {
         setIsLoading(true);
         const subscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
-
+                // console.log('user is' + JSON.stringify(user));
 
                 const userCollection = collection(firestore, 'users');
                 const userQuery = query(userCollection, orderBy('name'))
 
                 unsubscribe = onSnapshot(userQuery, (snapshot) => {
-                    console.log('hi I have reached here')
+                   
                     const usersList = snapshot.docs.map((doc) => ({
                         id: doc.id,
                         ...doc.data(),
@@ -76,23 +76,23 @@ const Home = () => {
                             adminNumber = adminNumber + 1;
                         }
                     })
-                    async function getName() {
+
+                    async function getName() {//here we have to write this as user doesnt contain name as display name cpmes as null so we have to fetch data from firestore
                         const docRef = doc(firestore, 'users', user.uid);
                         const data = await getDoc(docRef);
                         if (data.exists()) {
                             console.log(data.data());
                             setName(data.data().name)
                         }
-                        console.log('waiting');
+                        
                     }
                     getName()
                     setAdminCount(adminNumber);
                     setUserCount(usersList.length - adminNumber);
                     setUserList(usersList);
                     setFiltered(usersList);
-                    console.log(user)
                     setIsLoading(false);
-                }, (error) => {//here we had to write it like and and using try cath block doesnt catch the error as onSnapshot is an async function so try catch initially doesnt catch the error causing it not give alert
+                }, (error) => {//here we had to write it like this and using try catch block doesnt catch the error as onSnapshot is an async function so try catch initially doesnt catch the error causing it not give alert
                     if (error.code === 'permission-denied') {
                         alert('permission denied')
                         navigate('/')
@@ -176,8 +176,6 @@ const Home = () => {
                     </div>
                 )
             }
-
-
 
         </div>
     )
