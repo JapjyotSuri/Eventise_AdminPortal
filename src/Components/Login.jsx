@@ -67,7 +67,7 @@ const Login = () => {
     }
   return (
 
-    <div className=' min-h-screen flex justify-center items-center '>
+    <div className=' min-h-screen flex justify-center items-center bg-slate-100'>
        <Formik
             initialValues={{email: '', password: ''}}
             validationSchema={LoginValidationSchema}
@@ -85,7 +85,7 @@ const Login = () => {
               handleSubmit,
 
             }) => (
-              <div className='w-[450px] h-[500px]  p-4 flex items-center justify-center flex-col gap-3 rounded-2xl shadow-md bg-white  text-black text-[19px] '>
+              <div className='w-[425px] h-[500px]  p-4 flex items-center justify-center flex-col gap-3 rounded-2xl shadow-md bg-white  text-black text-[19px] '>
                 <div className='flex justify-start w-[85%]'>
                 <label className='text-[17px]'>Enter Email: </label>
                 </div>
@@ -98,11 +98,11 @@ const Login = () => {
                 <label className='text-[17px]'>Enter Password: </label>
                 </div>
                 <div>
-                  <input  placeholder='Password' value={values.password} onChange={handleChange('password')} type='password' className=' w-[350px] h-[50px] border-black bg-slate-100 rounded-l pl-4'/>
+                  <input  placeholder='Password' value={values.password} onChange={handleChange('password')} type='password' className=' w-[350px] h-[50px] border-black bg-slate-100 rounded-lg pl-4'/>
                 </div>
                 {(errors.password && touched.password) && <h1 className=' text-red-500 text-[17px] my-[-10px]'>{errors.password}</h1>}
                 <div className='w-[85%]  flex justify-start'><h3  onClick={() => handleReset(values)} className='text-[17px] text-blue-400'>forgotten your password?</h3></div>
-                <button onClick={handleSubmit} className='bg-blue-500 w-[350px] h-[50px] rounded-lg text-white'><h1>Login</h1></button>
+                <button onClick={handleSubmit} className='bg-blue-500 w-[340px] h-[50px] rounded-lg text-white'><h1>Login</h1></button>
                 <div className='flex flex-row w-[85%] justify-start items-center gap-2 '>
                   <h1 className='text-[17px]'>Dont have an account? </h1>
                   <button onClick={() => navigate('Signup')} className=' text-blue-500 text-[17px]'>Signup</button>
