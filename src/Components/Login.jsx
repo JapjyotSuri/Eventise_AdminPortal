@@ -6,9 +6,16 @@ import googleLoginPic from '../googleLogin.png'
 import { Formik } from 'formik';
 import { firestore } from '../firebase';
 import {  doc, setDoc} from '@firebase/firestore'
-
+import * as Yup from 'yup'
 const Login = () => {
    const navigate=useNavigate();
+   const LoginValidationSchema = Yup.object().shape({
+    email: Yup.string().email('Please enter valid email').required('Email address is required'),
+
+    password: Yup.string()
+      .required('password is required')
+  })
+
    async function LoginFunc(values) {
     console.log(values);
 
@@ -63,7 +70,7 @@ const Login = () => {
     <div className=' min-h-screen flex justify-center items-center '>
        <Formik
             initialValues={{email: '', password: ''}}
-            
+            validationSchema={LoginValidationSchema}
             onSubmit={(values) => {
               console.log(values)
               LoginFunc(values);
@@ -71,7 +78,9 @@ const Login = () => {
             }}
           >
             {({
-              values,              
+              values,
+              errors,
+              touched,              
               handleChange,
               handleSubmit,
 
@@ -84,13 +93,14 @@ const Login = () => {
                 
                   <input  placeholder='Email' value={values.email} onChange={handleChange('email')} className=' w-[350px] h-[50px] border-black bg-slate-100 rounded-l pl-4'/>
                 </div>
-                
+                {(errors.email && touched.email) && <h1 className=' text-red-500 text-[17px] my-[-10px]'>{errors.email}</h1>}
                 <div className='flex justify-start w-[85%]'>
                 <label className='text-[17px]'>Enter Password: </label>
                 </div>
                 <div>
                   <input  placeholder='Password' value={values.password} onChange={handleChange('password')} type='password' className=' w-[350px] h-[50px] border-black bg-slate-100 rounded-l pl-4'/>
                 </div>
+                {(errors.password && touched.password) && <h1 className=' text-red-500 text-[17px] my-[-10px]'>{errors.password}</h1>}
                 <div className='w-[85%]  flex justify-start'><h3  onClick={() => handleReset(values)} className='text-[17px] text-blue-400'>forgotten your password?</h3></div>
                 <button onClick={handleSubmit} className='bg-blue-500 w-[350px] h-[50px] rounded-lg text-white'><h1>Login</h1></button>
                 <div className='flex flex-row w-[85%] justify-start items-center gap-2 '>
