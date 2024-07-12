@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { firestore } from "../firebase";
 import { setDoc, doc, collection, updateDoc } from "@firebase/firestore";
 import { CiLocationOn } from "react-icons/ci";
+import { GiSplitCross } from "react-icons/gi";
+import { GoDotFill } from "react-icons/go";
 const DescriptionPage = ({ currentEvent, showDescriptionHandler }) => {
+  const [eventStatus,setEventStatus]=useState(currentEvent.status)
   function closeHandler() {
     showDescriptionHandler(false, currentEvent);
   }
@@ -12,6 +15,7 @@ const DescriptionPage = ({ currentEvent, showDescriptionHandler }) => {
     await updateDoc(eventDocref, {
       status: "Approved",
     });
+    setEventStatus('Approved')
   }
   async function handleReject() {
     const eventRef = collection(firestore, "events");
@@ -19,18 +23,32 @@ const DescriptionPage = ({ currentEvent, showDescriptionHandler }) => {
     await updateDoc(eventDocref, {
       status: "Rejected",
     });
+    setEventStatus('Rejected')
+  }
+  function textColor(eventStatus){
+    switch(eventStatus){
+        case 'pending':
+        return 'text-yellow-400'
+        case 'Approved':
+        return 'text-green-400'
+default:
+        return 'text-red-400'
+    }
   }
   return (
     <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center flex-col">
-      <button onClick={closeHandler} className=" text-red-500">
-        close
+      <div className="w-[750px]  flex justify-start items-start ">
+      <button onClick={closeHandler} className=" text-red-500 ">
+        <h1 className="text-[30px] "><GiSplitCross size={40}/></h1>
       </button>
+      </div>
       <div className="flex gap-10 items-center  flex-col bg-white w-[620px] h-auto  rounded-lg px-2 ">
         <div className="w-[100%] flex flex-col">
-          <div className="flex w-[100%] justify-between px-4">
-            <button className="bg-yellow-400 px-2 py-1 rounded-lg m-4">
-              {currentEvent.status}
-            </button>
+          <div className="flex w-[100%] justify-between px-4 animate-pulse">
+            <div className=" px-2 py-1 rounded-lg m-4 flex flex-row">
+              <GoDotFill size={30} className={`${textColor(eventStatus)}`}/>
+              <h1 className={` ${textColor(eventStatus)} font-bold text-[20px]`}>{eventStatus}</h1>
+            </div>
 
             <h1 className="text-[20px]  m-4 text-gray-400">
                {currentEvent.title}
@@ -45,7 +63,7 @@ const DescriptionPage = ({ currentEvent, showDescriptionHandler }) => {
             />
             
           </div>
-          <div className="w-[100%] flex flex-row justify-between items-center mt-4 px-2">
+          <div className="w-[100%] flex flex-row justify-between items-center mt-4 px-6">
           <h1 className=" text-[18px] text-gray-400">
                 
                  {currentEvent.date.toDate().toLocaleDateString()}
@@ -59,22 +77,23 @@ const DescriptionPage = ({ currentEvent, showDescriptionHandler }) => {
     
           <div className="w-[100%] flex justify-between items-start bg-white"></div>
           <div className="w-[100%] flex justify-between items-start bg-white my-5">
-            <h1 className=" text-[20px] text-gray-400">{currentEvent.description}</h1>
+            <h1 className=" text-[20px] text-gray-400 px-6 text-justify">{currentEvent.description}</h1>
           </div>
 
           <div className="w-[100%] flex gap-5 items-end justify-center bg-white mb-3">
-            <button
-              onClick={() => handleAccept()}
-              className="bg-green-400 px-4 py-1 rounded-lg"
-            >
-              Accept
-            </button>
-            <button
+          <button
               onClick={() => handleReject()}
-              className="bg-red-400 px-4 py-1 rounded-lg"
+              className="bg-red-400 px-4 py-1 rounded-lg text-white"
             >
               Reject
             </button>
+            <button
+              onClick={() => handleAccept()}
+              className="bg-green-400 px-4 py-1 rounded-lg text-white"
+            >
+              Approve
+            </button>
+            
           </div>
         </div>
       </div>

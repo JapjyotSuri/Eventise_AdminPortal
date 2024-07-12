@@ -34,7 +34,7 @@ const Home = () => {
   const firstIndex = LastIndex - itemsPerPage;
   const totalPages = Math.ceil(filtered.length / itemsPerPage);
   const currentUsers = filtered.slice(firstIndex, LastIndex);
-
+  
   const [CurrentUser, setCurrentUser] = useState(null); //storing info about current logged in user
   const [list, setList] = useState("users");
   function handleDropdownProfile() {
@@ -109,12 +109,16 @@ const Home = () => {
                   onClick={() => {
                     setShowEventsDrop(!showEventsDrop);
                   }}
+                  onMouseEnter={() => setShowEventsDrop(true)}
+                
                 >
                   <h1 className=" text-white text-[25px]">Events</h1>
                 </button>
                 <div>
                   {showEventsDrop && (
-                    <div
+                    <div 
+                    onMouseEnter={() => setShowEventsDrop(true)}
+                    onMouseLeave={() => setShowEventsDrop(false)}
                       class="absolute  z-10 mt-4 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                       role="menu"
                       aria-orientation="vertical"
@@ -127,7 +131,7 @@ const Home = () => {
                           setEventFilter("all");
                           setList("events");
                         }}
-                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+                        class="block px-4 py-2 text-[17px] text-gray-700 hover:bg-gray-200"
                         role="menuitem"
                         tabindex="-1"
                         id="user-menu-item-0"
@@ -140,7 +144,7 @@ const Home = () => {
                           setEventFilter("pending");
                           setList("events");
                         }}
-                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+                        class="block px-4 py-2 text-[17px] text-gray-700 hover:bg-gray-200"
                         role="menuitem"
                         tabindex="-1"
                         id="user-menu-item-1"
@@ -153,7 +157,7 @@ const Home = () => {
                           setEventFilter("approved");
                           setList("events");
                         }}
-                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+                        class="block px-4 py-2 text-[17px] text-gray-700 hover:bg-gray-200"
                         role="menuitem"
                         tabindex="-1"
                         id="user-menu-item-2"
@@ -166,7 +170,7 @@ const Home = () => {
                           setEventFilter("rejected");
                           setList("events");
                         }}
-                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+                        class="block px-4 py-2 text-[17px] text-gray-700 hover:bg-gray-200"
                         role="menuitem"
                         tabindex="-1"
                         id="user-menu-item-2"
@@ -185,6 +189,7 @@ const Home = () => {
               <div
                 className="flex flex-row justify-center items-center gap-2 mr-8 "
                 onClick={() => handleDropdownProfile()}
+                onMouseEnter={() => setShowDropdownProfile(true)}
               >
                 <FaRegUserCircle className="h-[25px] w-[25px] text-white" />
                 <h1 className="text-[25px] text-white">{name}</h1>
@@ -197,29 +202,14 @@ const Home = () => {
                     aria-orientation="vertical"
                     aria-labelledby="user-menu-button"
                     tabindex="-1"
+                    onMouseEnter={() => setShowDropdownProfile(true)}
+                    onMouseLeave={() => setShowDropdownProfile(false)}
                   >
+                    
                     <a
-                      href="#"
-                      class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
-                      role="menuitem"
-                      tabindex="-1"
-                      id="user-menu-item-0"
-                    >
-                      Your Profile
-                    </a>
-                    <a
-                      href="#"
-                      class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
-                      role="menuitem"
-                      tabindex="-1"
-                      id="user-menu-item-1"
-                    >
-                      Settings
-                    </a>
-                    <a
-                      href="#"
+                      
                       onClick={handleLogout}
-                      class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+                      class="block px-4 py-2 text-lg text-gray-700 hover:bg-gray-200"
                       role="menuitem"
                       tabindex="-1"
                       id="user-menu-item-2"
