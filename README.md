@@ -1,0 +1,5 @@
+![anem](src/AdminPortal_LoginPage.png)
+![anem](src/AdminPortal_SignupPage.png)
+![anem](src/AdminPortal_Screenshot.png)
+![anem](src/AdminPortal_EventList_Screenshot.png)
+![anem](src/AdminPortal_EventDescription_Screenshot.png)

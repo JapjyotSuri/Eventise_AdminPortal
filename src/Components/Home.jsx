@@ -40,33 +40,19 @@ const Home = () => {
             
           }
           getName();
-          
+          setIsLoading(false);
         } catch (error) {
-          
-          if (error.code === "permission-denied") {
-            alert("permission denied");
-            navigate("/");
-            
-          } else {
-            console.log("An unexpected error occurred:", error);
-          }
           console.log("An unexpected error occurred:", error);
         }
-        
-        
-        //    , (error) => {//here we had to write it like this and using try catch block doesnt catch the error as onSnapshot is an async function so try catch initially doesnt catch the error causing it not give alert
-
-        //     });
       }
-      
-       setIsLoading(false);
-      
-      
+      else{
+        setIsLoading(false);
+      }
     });
     return () => {
       subscribe();
     };
-  }, [navigate]);
+  }, [navigate,name]);
   async function handleLogout() {
     await signOut(auth);
     setCurrentUser(null);
