@@ -91,10 +91,8 @@ const Home = () => {
                     <div
                       onMouseEnter={() => setShowEventsDrop(true)}
                       onMouseLeave={() => setShowEventsDrop(false)}
-                      class="absolute  z-10 mt-4 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                      class="absolute  z-10 mt-4 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none cursor-pointer"
                       role="menu"
-                      aria-orientation="vertical"
-                      aria-labelledby="user-menu-button"
                       tabindex="-1"
                     >
                       <div
@@ -105,7 +103,7 @@ const Home = () => {
                         class="block px-4 py-2 text-[17px] text-gray-700 hover:bg-gray-200"
                         role="menuitem"
                         tabindex="-1"
-                        id="user-menu-item-0"
+                        id="event-menu-item-0"
                       >
                         All Events
                       </div>
@@ -117,7 +115,7 @@ const Home = () => {
                         class="block px-4 py-2 text-[17px] text-gray-700 hover:bg-gray-200"
                         role="menuitem"
                         tabindex="-1"
-                        id="user-menu-item-1"
+                        id="event-menu-item-1"
                       >
                         Pending
                       </div>
@@ -129,7 +127,7 @@ const Home = () => {
                         class="block px-4 py-2 text-[17px] text-gray-700 hover:bg-gray-200"
                         role="menuitem"
                         tabindex="-1"
-                        id="user-menu-item-2"
+                        id="event-menu-item-2"
                       >
                         Approved
                       </div>
@@ -141,7 +139,7 @@ const Home = () => {
                         class="block px-4 py-2 text-[17px] text-gray-700 hover:bg-gray-200"
                         role="menuitem"
                         tabindex="-1"
-                        id="user-menu-item-2"
+                        id="event-menu-item-3"
                       >
                         Rejected
                       </div>
@@ -162,11 +160,9 @@ const Home = () => {
               <div>
                 {showDropdownProfile && (
                   <div
-                    class="absolute right-2 z-10 mt-5 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                    class="absolute right-2 z-10 mt-5 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none cursor-pointer"
                     role="menu"
-                    aria-orientation="vertical"
-                    aria-labelledby="user-menu-button"
-                    tabindex="-1"
+                    tabindex="-1"//here giving it -1 makes it not focusable by keyboard navigation
                     onMouseEnter={() => setShowDropdownProfile(true)}
                     onMouseLeave={() => setShowDropdownProfile(false)}
                   >
@@ -175,7 +171,6 @@ const Home = () => {
                       class="block px-4 py-2 text-lg text-gray-700 hover:bg-gray-200"
                       role="menuitem"
                       tabindex="-1"
-                      id="user-menu-item-2"
                     >
                       Sign out
                     </div>
