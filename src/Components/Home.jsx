@@ -9,8 +9,10 @@ import { useNavigate } from "react-router-dom";
 import EventList from "./EventList";
 import UserList from "./UserList";
 
+
 const Home = () => {
   const navigate = useNavigate();
+  const [pathTaken,setPathTaken]=useState('events');
   const [showEventsDrop, setShowEventsDrop] = useState(false);
   const [eventFilter, setEventFilter] = useState("all");
   const [isLoading, setIsLoading] = useState(false);
@@ -81,15 +83,22 @@ const Home = () => {
                 <button
                   onClick={() => {
                     setShowEventsDrop(!showEventsDrop);
+                    setPathTaken('events')
                   }}
-                  onMouseEnter={() => setShowEventsDrop(true)}
+                  onMouseEnter={() => {
+                    setShowEventsDrop(true)
+                    setPathTaken('events')
+                  }}
                 >
                   <h1 className=" text-white text-[25px]">Events</h1>
                 </button>
                 <div>
                   {showEventsDrop && (
                     <div
-                      onMouseEnter={() => setShowEventsDrop(true)}
+                      onMouseEnter={() => {
+                        setShowEventsDrop(true)
+                        setPathTaken('events')
+                      }}
                       onMouseLeave={() => setShowEventsDrop(false)}
                       class="absolute  z-10 mt-4 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none cursor-pointer"
                       role="menu"
@@ -146,7 +155,14 @@ const Home = () => {
                     </div>
                   )}
                 </div>
+
               </div>
+              <button onClick={() => {
+                setList("registrations")
+                setPathTaken('registrations')
+                }}>
+                <h1 className=" text-white text-[25px] ">Registrations</h1>
+              </button>
             </div>
             <div className="flex flex-col mr-2">
               <div
@@ -181,8 +197,9 @@ const Home = () => {
           </div>
           <div>{list === "users" && <UserList />}</div>
           <div>
-            {list === "events" && <EventList eventFilter={eventFilter} />}
+            {list === "events" && <EventList eventFilter={eventFilter} pathTaken={pathTaken}/>}
           </div>
+          <div>{list === "registrations" && <EventList eventFilter="approved" pathTaken={pathTaken}/>}</div>
         </div>
       )}
     </div>

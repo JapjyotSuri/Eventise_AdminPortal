@@ -32,7 +32,7 @@ const Table = ({ currentUsers }) => {
   }
   return (
     <div className=" w-full flex flex-col  justify-center items-center ml-[-50px]">
-      <table className="min-w-[90%] border-collapse border border-gray-300">
+      <table className="min-w-[90%] border-collapse border border-gray-300 rounded-lg">
         <thead>
           <tr>
             <th className="border border-gray-400 px-4 py-2">Name</th>

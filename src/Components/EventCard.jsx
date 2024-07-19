@@ -1,6 +1,6 @@
 import React from "react";
 import { CiLocationOn } from "react-icons/ci";
-const EventCard = ({ event, showDescriptionHandler }) => {
+const EventCard = ({ event, showDescriptionHandler ,pathTaken}) => {
   function descriptionHandler() {
     showDescriptionHandler(true, event);
   }

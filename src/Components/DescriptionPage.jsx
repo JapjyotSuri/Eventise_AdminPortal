@@ -4,8 +4,11 @@ import { doc, collection, updateDoc } from "@firebase/firestore";
 import { CiLocationOn } from "react-icons/ci";
 import { GiSplitCross } from "react-icons/gi";
 import { GoDotFill } from "react-icons/go";
+import RegistrationDetailsPage from "./RegistrationDetailsPage";
 const DescriptionPage = ({ currentEvent, showDescriptionHandler }) => {
+  const [showRegistrations,setShowRegistrations]=useState(false);
   const [eventStatus, setEventStatus] = useState(currentEvent.status);
+  
   function closeHandler() {
     showDescriptionHandler(false, currentEvent);
   }
@@ -55,7 +58,7 @@ const DescriptionPage = ({ currentEvent, showDescriptionHandler }) => {
                 {eventStatus}
               </h1>
             </div>
-
+            
             <h1 className="text-[20px]  font-bold m-4 text-gray-400">
               {currentEvent.title}
             </h1>
@@ -105,6 +108,7 @@ const DescriptionPage = ({ currentEvent, showDescriptionHandler }) => {
           </div>
         </div>
       </div>
+      
     </div>
   );
 };

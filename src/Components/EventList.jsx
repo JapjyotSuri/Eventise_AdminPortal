@@ -6,19 +6,22 @@ import {
 } from "@firebase/firestore";
 import EventCard from "./EventCard";
 import DescriptionPage from "./DescriptionPage";
-const EventList = ({ eventFilter }) => {
+import RegistrationDetailsPage from "./RegistrationDetailsPage";
+const EventList = ({ eventFilter ,pathTaken}) => {
   const [sortAccording, setSortAccording] = useState("Title");
   const [filteredList, setFilteredList] = useState([]);
   const [showDescription, setShowDescription] = useState(false);
+  const [showRegistrations,setShowRegistrations]=useState(false);
   const [currentEvent, setCurrentEvent] = useState(null);
   const [eventList, SetEventList] = useState(null);
   const [sortedEvents, setSortedEvents] = useState([]);
   function showDescriptionHandler(option, event) {
     setShowDescription(option);
-
+    console.log("current event is",event);
     setCurrentEvent(event);
   }
   useEffect(() => {
+    console.log(pathTaken)
     const eventCollection = collection(firestore, "events");
     const unsubscribe = onSnapshot(eventCollection, (snapshot) => {
       const eventsList = snapshot.docs.map((doc) => ({
@@ -61,24 +64,30 @@ const EventList = ({ eventFilter }) => {
 
   return (
     <div className="mt-3">
-      {eventFilter === "all" && (
+      
+      {pathTaken==="events" && eventFilter === "all" && (
         <div className="w-[100%] flex justify-center items-center  text-[30px]">
-          <h1>All Events</h1>
+          <h1 className="text-gray-600">All Events</h1>
         </div>
       )}
-      {eventFilter === "pending" && (
+      {pathTaken==="events" && eventFilter === "pending" && (
         <div className="w-[100%] flex justify-center items-center  text-[30px]">
           <h1>Pending Events</h1>
         </div>
       )}
-      {eventFilter === "approved" && (
+      {pathTaken==="events" && eventFilter === "approved" && (
         <div className="w-[100%] flex justify-center items-center  text-[30px]">
           <h1>Approved Events</h1>
         </div>
       )}
-      {eventFilter === "rejected" && (
+      {pathTaken==="events" && eventFilter === "rejected" && (
         <div className="w-[100%] flex justify-center items-center  text-[30px]">
           <h1>Rejeted Events</h1>
+        </div>
+      )}
+      {pathTaken==="registrations" &&  (
+        <div className="w-[100%] flex justify-center items-center  text-[30px]">
+          <h1>Registrations</h1>
         </div>
       )}
       <div className="w-[100%]  flex flex-row justify-start items-center ml-[6%] gap-2">
@@ -100,6 +109,7 @@ const EventList = ({ eventFilter }) => {
             <EventCard
               event={event}
               showDescriptionHandler={showDescriptionHandler}
+              pathTaken={pathTaken}
             />
           ))}
         {sortedEvents && sortedEvents.length === 0 && (
@@ -109,8 +119,14 @@ const EventList = ({ eventFilter }) => {
         )}
       </div>
       <div className="overlay">
-        {showDescription && currentEvent && (
+        {pathTaken === "events" && showDescription && currentEvent && (
           <DescriptionPage
+            currentEvent={currentEvent}
+            showDescriptionHandler={showDescriptionHandler}
+          />
+        )}
+        {pathTaken === "registrations" && showDescription && currentEvent && (
+          <RegistrationDetailsPage
             currentEvent={currentEvent}
             showDescriptionHandler={showDescriptionHandler}
           />
