@@ -8,7 +8,7 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import EventList from "./EventList";
 import UserList from "./UserList";
-
+import { FaRegHourglassHalf } from "react-icons/fa6";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -72,12 +72,13 @@ const Home = () => {
       ) : (
         <div className=" w-[100%] flex flex-col   overflow-x-hidden">
           <div className="w-[100%] h-[70px] bg-[#222322] flex flex-row justify-between items-center ">
-            <div className="flex justify-start ml-5">
-              <h1 className="text-[30px]  text-white">Admin Portal</h1>
+            <div className="flex justify-start ml-5 flex-row items-center gap-1">
+            <FaRegHourglassHalf size={27} color="white"/>
+              <h1 className="text-[30px] font-[600]  text-white">Admin Portal</h1>
             </div>
             <div className=" flex justify-center items-center gap-9">
               <button onClick={() => setList("users")}>
-                <h1 className=" text-white text-[25px] ">Users</h1>
+                <h1 className=" text-white font-[500] text-[20px] ">Users</h1>
               </button>
               <div className="flex flex-col">
                 <button
@@ -90,7 +91,7 @@ const Home = () => {
                     setPathTaken('events')
                   }}
                 >
-                  <h1 className=" text-white text-[25px]">Events</h1>
+                  <h1 className=" text-white font-[500] text-[20px]">Events</h1>
                 </button>
                 <div>
                   {showEventsDrop && (
@@ -161,7 +162,7 @@ const Home = () => {
                 setList("registrations")
                 setPathTaken('registrations')
                 }}>
-                <h1 className=" text-white text-[25px] ">Registrations</h1>
+                <h1 className=" text-white text-[20px] font-[500]">Registrations</h1>
               </button>
             </div>
             <div className="flex flex-col mr-2">

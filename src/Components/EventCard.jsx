@@ -1,5 +1,7 @@
 import React from "react";
 import { CiLocationOn } from "react-icons/ci";
+import { FaLocationDot } from "react-icons/fa6";
+
 const EventCard = ({ event, showDescriptionHandler ,pathTaken}) => {
   function descriptionHandler() {
     showDescriptionHandler(true, event);
@@ -7,11 +9,21 @@ const EventCard = ({ event, showDescriptionHandler ,pathTaken}) => {
   function colorDetermine(status) {
     switch (status) {
       case "pending":
-        return "bg-yellow-400";
+        return "bg-yellow-200 text-yellow-800";
       case "Approved":
-        return "bg-green-400";
+        return "bg-green-200 text-green-800";
       case "Rejected":
-        return "bg-red-400";
+        return "bg-red-200 text-red-800";
+    }
+  }
+  function TextColorDetermine(status) {
+    switch (status) {
+      case "pending":
+        return "text-yellow-800";
+      case "Approved":
+        return "text-green-800";
+      case "Rejected":
+        return "text-red-800";
     }
   }
   return (
@@ -46,15 +58,16 @@ const EventCard = ({ event, showDescriptionHandler ,pathTaken}) => {
       </div>
       <div className="flex w-[100%] justify-between i bg-white">
         <div className="flex gap-1 items-center">
-          <CiLocationOn size={17} color="red" />
+          <FaLocationDot size={16} color="red" />
           <h1 className="text-gray-400 text-[17px]">{event.location}</h1>
         </div>
         <button
           className={` ${colorDetermine(
             event.status
-          )} px-2 py-1 rounded-lg text-white `}
+          )} px-2 py-1 rounded-lg 
+           `}
         >
-          {event.status}
+        {event.status}
         </button>
       </div>
     </div>
