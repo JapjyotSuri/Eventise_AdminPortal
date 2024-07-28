@@ -33,10 +33,10 @@ const WithAuthProtection = (WrappedComponent) => {
         </div>
       ); // Show a loading indicator while checking auth state
     }
-    if (!user) {
-      alert("log in first");
-      console.log("User not signed in, redirecting...");
-    }
+    // if (!user) {
+    //   alert("log in first");
+    //   console.log("User not signed in, redirecting...");
+    // }
 
     return <WrappedComponent {...props} />;
   };

@@ -8,7 +8,7 @@ const EventCard = ({ event, showDescriptionHandler ,pathTaken}) => {
   }
   function colorDetermine(status) {
     switch (status) {
-      case "pending":
+      case "Pending":
         return "bg-yellow-200 text-yellow-800";
       case "Approved":
         return "bg-green-200 text-green-800";
@@ -18,7 +18,7 @@ const EventCard = ({ event, showDescriptionHandler ,pathTaken}) => {
   }
   function TextColorDetermine(status) {
     switch (status) {
-      case "pending":
+      case "Pending":
         return "text-yellow-800";
       case "Approved":
         return "text-green-800";
@@ -28,7 +28,7 @@ const EventCard = ({ event, showDescriptionHandler ,pathTaken}) => {
   }
   return (
     <div
-      className="w-[400px] h-auto m-4 p-4 flex items-center justify-center flex-col rounded-2xl shadow-md bg-gray-white hover:shadow-lg hover:scale-105 transition-transform duration-300"
+      className="w-[400px] h-auto m-4 p-4 flex items-center justify-center flex-col rounded-2xl shadow-md bg-gray-white hover:shadow-lg hover:scale-105 duration-500 hover:translate-x-2 hover:translate-y-2"
       onClick={() => descriptionHandler(event)}
     >
       <img

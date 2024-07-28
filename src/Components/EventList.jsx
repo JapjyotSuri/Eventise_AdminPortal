@@ -30,7 +30,7 @@ const EventList = ({ eventFilter, pathTaken }) => {
 
       const filteredEvents = eventsList.filter((event) => {
         if (eventFilter === "pending") {
-          return event.status === "pending";
+          return event.status === "Pending";
         } else if (eventFilter === "rejected") {
           return event.status === "Rejected";
         } else if (eventFilter === "approved") {
@@ -101,7 +101,7 @@ const EventList = ({ eventFilter, pathTaken }) => {
           </div>
         </div>
       </div>
-      <div className="flex flex-wrap justify-center items-center">
+      <div className="flex flex-wrap justify-center items-center pb-10">
         {sortedEvents &&
           sortedEvents.map((event) => (
             <EventCard

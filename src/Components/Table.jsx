@@ -32,24 +32,23 @@ const Table = ({ currentUsers }) => {
   }
   return (
     <div className=" w-full flex flex-col  justify-center items-center ml-[-50px]">
-      <table className="min-w-[90%] border-collapse border border-gray-300 rounded-lg">
-        <thead>
+      <table className="min-w-[90%] rounded-xl overflow-hidden shadow-2xl">
+        <thead className='bg-gray-100 border-b-2  border-gray-300'>
           <tr>
-            <th className="border border-gray-400 px-4 py-2">Name</th>
-            <th className="border border-gray-400 px-4 py-2">Email</th>
-            <th className="border border-gray-400 px-4 py-2">Role</th>
-            <th className="border border-gray-400 px-4 py-2">Actions</th>
+            <th className="p-3 text-[17px] font-semibold tracking-wide text-left">Name</th>
+            <th className="p-3 text-[17px] font-semibold tracking-wide text-left">Email</th>
+            <th className="p-3 text-[17px] font-semibold tracking-wide">Role</th>
+            <th className="p-3 text-[17px] font-semibold tracking-wide">Actions</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="divide-y divide-gray-100">
           {currentUsers.map((user, index) => (
-            <tr key={index}>
-              <td className="border border-gray-400 px-4 py-2">
-                {" "}
-                {user.name}{" "}
+            <tr className={index % 2 === 0 ? 'bg-white ' : 'bg-gray-100'} key={index}>
+              <td className="p-3 text-[16px] text-gray-700 text-left"> 
+                {user.name}
               </td>
-              <td className="border border-gray-400 px-4 py-2">{user.email}</td>
-              <td className="border border-gray-400 px-4 py-2 ">
+              <td className="p-3 text-[16px] text-gray-700 text-left">{user.email}</td>
+              <td className="p-3 text-[16px] text-gray-700  ">
                 <select
                   value={user.role === 0 ? "admin" : "user"}
                   onChange={(e) => handleChange(user, e.target.value)}
@@ -59,7 +58,7 @@ const Table = ({ currentUsers }) => {
                   <option value="admin">Admin</option>
                 </select>
               </td>
-              <td className="border border-gray-400 px-4 py-2">
+              <td className="p-3 text-[16px] text-gray-700 ">
                 <button>
                   <MdDelete
                     onClick={() => handleDelete(user)}

@@ -40,7 +40,7 @@ const RegistrationTable = ({registeredList}) => {
                         <td className="p-3 text-[16px] text-gray-700 text-left">{registration.email}</td>
                         <td className="p-3 text-[16px] text-gray-700 text-left">{registration.phoneNummber}</td>
                         <td className="p-3 text-[16px] text-gray-700 text-left">
-                            {registration.status=== 'pending' && 
+                            {registration.status=== 'Pending' && 
                             <div className='flex flex-row justify-center items-center gap-4'>
                                 <SiTicktick size={20} color='green' onClick={() => handleApprove(registration)}/>
                                 <ImCross size={18} color='red' onClick={()=> handleReject(registration)}/>

@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import EventList from "./EventList";
 import UserList from "./UserList";
 import { FaRegHourglassHalf } from "react-icons/fa6";
-
+import logo from "../logo-color__finalPic.png";
 const Home = () => {
   const navigate = useNavigate();
   const [pathTaken,setPathTaken]=useState('events');
@@ -60,6 +60,9 @@ const Home = () => {
     setCurrentUser(null);
     navigate("/");
   }
+  function isActive(menuItem){
+    return list === menuItem;
+  }  
   return (
     <div className=" w-[100%] flex flex-col   min-h-screen  ">
       {isLoading ? (
@@ -72,13 +75,14 @@ const Home = () => {
       ) : (
         <div className=" w-[100%] flex flex-col   overflow-x-hidden">
           <div className="w-[100%] h-[70px] bg-[#222322] flex flex-row justify-between items-center ">
-            <div className="flex justify-start ml-5 flex-row items-center gap-1">
-            <FaRegHourglassHalf size={27} color="white"/>
-              <h1 className="text-[30px] font-[600]  text-white">Admin Portal</h1>
+            <div className="flex justify-start  flex-row items-center ">
+              <img src={logo} className="h-[160px] width:[70px] -ml-7" ></img>
+              <h1 className="text-[30px] font-[600]  text-white -ml-9">Admin Portal</h1>
             </div>
             <div className=" flex justify-center items-center gap-9">
               <button onClick={() => setList("users")}>
-                <h1 className=" text-white font-[500] text-[20px] ">Users</h1>
+                <h1  className={`text-white font-[500] text-[20px]  ${isActive("users") ? "border-b-2 border-white py-1" : ""
+                    }`}>Users</h1>
               </button>
               <div className="flex flex-col">
                 <button
@@ -91,7 +95,7 @@ const Home = () => {
                     setPathTaken('events')
                   }}
                 >
-                  <h1 className=" text-white font-[500] text-[20px]">Events</h1>
+                  <h1 className={`text-white font-[500] text-[20px]  ${isActive("events") ? "border-b-2 border-white py-1" : ""}`}>Events</h1>
                 </button>
                 <div>
                   {showEventsDrop && (
@@ -110,7 +114,7 @@ const Home = () => {
                           setEventFilter("all");
                           setList("events");
                         }}
-                        class="block px-4 py-2 text-[17px] text-gray-700 hover:bg-gray-200"
+                        class="block px-4 py-2 text-[17px] text-gray-700 hover:bg-gray-200 duration-500 rounded"
                         role="menuitem"
                         tabindex="-1"
                         id="event-menu-item-0"
@@ -122,7 +126,7 @@ const Home = () => {
                           setEventFilter("pending");
                           setList("events");
                         }}
-                        class="block px-4 py-2 text-[17px] text-gray-700 hover:bg-gray-200"
+                        class="block px-4 py-2 text-[17px] text-gray-700 hover:bg-gray-200 duration-500 rounded"
                         role="menuitem"
                         tabindex="-1"
                         id="event-menu-item-1"
@@ -134,7 +138,7 @@ const Home = () => {
                           setEventFilter("approved");
                           setList("events");
                         }}
-                        class="block px-4 py-2 text-[17px] text-gray-700 hover:bg-gray-200"
+                        class="block px-4 py-2 text-[17px] text-gray-700 hover:bg-gray-200 duration-500 rounded"
                         role="menuitem"
                         tabindex="-1"
                         id="event-menu-item-2"
@@ -146,7 +150,7 @@ const Home = () => {
                           setEventFilter("rejected");
                           setList("events");
                         }}
-                        class="block px-4 py-2 text-[17px] text-gray-700 hover:bg-gray-200"
+                        class="block px-4 py-2 text-[17px] text-gray-700 hover:bg-gray-200 duration-500 rounded"
                         role="menuitem"
                         tabindex="-1"
                         id="event-menu-item-3"
@@ -162,7 +166,7 @@ const Home = () => {
                 setList("registrations")
                 setPathTaken('registrations')
                 }}>
-                <h1 className=" text-white text-[20px] font-[500]">Registrations</h1>
+                <h1 className={`text-white font-[500] text-[20px]  ${isActive("registrations") ? "border-b-2 border-white py-1" : ""}`}>Registrations</h1>
               </button>
             </div>
             <div className="flex flex-col mr-2">
@@ -185,7 +189,7 @@ const Home = () => {
                   >
                     <div
                       onClick={handleLogout}
-                      class="block px-4 py-2 text-lg text-gray-700 hover:bg-gray-200"
+                      class="block px-4 py-2 text-lg text-gray-700 hover:bg-red-600 hover:text-white font-[500] duration-500 rounded"
                       role="menuitem"
                       tabindex="-1"
                     >

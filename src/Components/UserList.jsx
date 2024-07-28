@@ -41,7 +41,7 @@ const UserList = () => {
   function handleSearchChange(e) {
     setSearch(e.target.value);
   }
-  function handleSearch() {
+  function handleSearch(search) {
     if (search === "") {
       setFiltered(userList);
     } else {
@@ -53,7 +53,7 @@ const UserList = () => {
         );
       });
       setFiltered(newUsers);
-      setSearch("");
+      // setSearch("");
     }
   }
 
@@ -133,34 +133,38 @@ const UserList = () => {
           ></div>
         </div>
       ) : (
-        <div className="flex flex-col mt-3  w-[75%] ">
+        <div className="flex flex-col w-[75%] h-full pb-6">
           <div className="flex flex-col justify-center items-start w-full ml-11">
             <div className="flex flex-col justify-start items-start gap-4 mt-4 mb-2">
-              <h1 className="text-[30px]">Welcome back, {name} !!!!</h1>
-              <p className="text-[17px]">
+              <h1 className="text-[30px] ">Welcome back, {name} !!!!</h1>
+              <p className="text-[18px] ">
                 Welcome to the Users List section! Here, you'll find all the
                 information about the registered users.
               </p>
             </div>
             <div className="flex flex-row mt-5 justify-center gap-10 ">
-              <div className=" bg-[#f1e2ff] rounded-lg w-[150px] h-[50px] flex justify-center items-center">
-                <h1>Admin: {adminCount}</h1>
+              <div className=" bg-[#f1e2ff] rounded-lg w-[150px] h-[50px] flex justify-center items-center shadow-xl">
+                <h1 className="text-[#4b0082] text-[18px]">Admin: {adminCount}</h1>
               </div>
-              <div className=" bg-[#dcffdf] rounded-lg w-[150px] h-[50px] flex justify-center items-center">
-                <h1>User: {userCount}</h1>
+              <div className=" bg-green-100 rounded-lg w-[150px] h-[50px] flex justify-center items-center shadow-xl">
+                <h1 className="text-green-800 text-[18px]">User: {userCount}</h1>
               </div>
             </div>
-            <div className="w-full flex justify-start items-center ">
-              <button onClick={handleSearch}>
-                <FaSearch className="h-[25px] w-[25px]" />{" "}
-              </button>
+            <div className="w-[95%] flex justify-end items-center -ml-5">
+              
               <input
                 type="text"
-                onChange={(e) => handleSearchChange(e)}
+                onChange={(e) => {
+                  // handleSearchChange(e)
+                  setSearch(e.target.value);
+                  handleSearch(e.target.value);
+                }
+                }
                 value={search}
-                className="h-[40px] w-[85%] m-5 border-black px-4"
-                placeholder="Search"
+                className="w-full m-5  px-4 shadow-2xl rounded-2xl py-3 focus:outline-none border border-slate-100 bg-slate-50"
+                placeholder="Search..."
               />
+                <FaSearch className="h-[25px] w-[25px] absolute mr-10 text-slate-600" />
             </div>
 
             <Table currentUsers={currentUsers} />
@@ -168,13 +172,13 @@ const UserList = () => {
             <div className="flex flex-row w-[90%] ml-2 justify-center gap-11 mt-6 ">
               <button
                 onClick={handlePrev}
-                className="bg-[#f1e2ff] rounded-lg h-[40px] w-[150px]"
+                className="bg-[#f1e2ff] rounded-lg h-[40px] w-[150px] text-[#4b0082] shadow-xl"
               >
                 Previous
               </button>
               <button
                 onClick={handleNext}
-                className="bg-[#dcffdf] rounded-lg h-[40px] w-[150px]"
+                className="bg-green-100 rounded-lg h-[40px] w-[150px] text-green-800 shadow-xl"
               >
                 Next
               </button>
