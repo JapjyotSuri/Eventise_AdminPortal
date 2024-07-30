@@ -25,7 +25,7 @@ const Home = () => {
     setShowDropdownProfile(!showDropdownProfile);
   }
   useEffect(() => {
-    //using onSnapshot here to get real time updates whenever some data in the firestore gets changed
+
     setIsLoading(true)
     const subscribe = onAuthStateChanged(auth, (user) => {
       if (user) {

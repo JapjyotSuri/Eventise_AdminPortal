@@ -99,7 +99,6 @@ const UserList = () => {
           },
           (error) => {
             //here we had to write it like this and using try catch block doesnt catch the error as onSnapshot is an async function so try catch initially doesnt catch the error causing it not give alert
-            console.log("I am here");
             
             if (error.code === "permission-denied") {
                 setIsLoading(false);
