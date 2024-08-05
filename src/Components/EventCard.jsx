@@ -2,7 +2,7 @@ import React from "react";
 import { CiLocationOn } from "react-icons/ci";
 import { FaLocationDot } from "react-icons/fa6";
 
-const EventCard = ({ event, showDescriptionHandler ,pathTaken}) => {
+const EventCard = ({ event, showDescriptionHandler}) => {
   function descriptionHandler() {
     showDescriptionHandler(true, event);
   }
