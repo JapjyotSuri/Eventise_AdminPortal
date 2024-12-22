@@ -107,7 +107,7 @@ const EventList = ({ eventFilter, pathTaken }) => {
             <EventCard
               event={event}
               showDescriptionHandler={showDescriptionHandler}
-              pathTaken={pathTaken}
+              
             />
           ))}
         {sortedEvents && sortedEvents.length === 0 && (
